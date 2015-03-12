@@ -24,17 +24,20 @@ class OAuthWeb extends OAuth {
      * @param string $clientSecret (default: '') Client-Secret of your web application from the Google APIs console
      * @param string $redirectUri (default: '') Redirect URI to your app - must match with an URL provided in the Google APIs console
      */
-    public function __construct($clientId='', $clientSecret='', $redirectUri='') {
+    public function __construct($clientId = '', $clientSecret = '', $redirectUri = '')
+    {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->redirectUri = $redirectUri;
     }
 
-    public function setClientSecret($secret) {
+    public function setClientSecret($secret)
+    {
         $this->clientSecret = $secret;
     }
 
-    public function setRedirectUri($uri) {
+    public function setRedirectUri($uri)
+    {
         $this->redirectUri = $uri;
     }
 
@@ -46,7 +49,8 @@ class OAuthWeb extends OAuth {
      * @param array $params Custom parameters
      * @return string The auth login-url
      */
-    public function buildAuthUrl($params = array()) {
+    public function buildAuthUrl($params = array())
+    {
 
         if (!$this->clientId || !$this->redirectUri) {
             throw new Exception('You must provide the clientId and a redirectUri');
@@ -62,6 +66,7 @@ class OAuthWeb extends OAuth {
         );
         $params = array_merge($defaults, $params);
         $url = self::AUTH_URL . '?' . http_build_query($params);
+
         return $url;
 
     }
@@ -74,7 +79,8 @@ class OAuthWeb extends OAuth {
      * @param mixed $data The code received with GET after auth
      * @return array Array with the following keys: access_token, refresh_token, expires_in
      */
-    public function getAccessToken($data=null) {
+    public function getAccessToken($data = null)
+    {
 
         if (!$this->clientId || !$this->clientSecret || !$this->redirectUri) {
             throw new Exception('You must provide the clientId, clientSecret and a redirectUri');
@@ -89,6 +95,7 @@ class OAuthWeb extends OAuth {
         );
 
         $auth = Http::curl(OAuth::TOKEN_URL, $params, true);
+
         return json_decode($auth, $this->assoc);
 
     }
@@ -101,7 +108,8 @@ class OAuthWeb extends OAuth {
      * @param mixed $refreshToken The refreshToken
      * @return array Array with the following keys: access_token, expires_in
      */
-    public function refreshAccessToken($refreshToken) {
+    public function refreshAccessToken($refreshToken)
+    {
 
         if (!$this->clientId || !$this->clientSecret) {
             throw new Exception('You must provide the clientId and clientSecret');
@@ -115,6 +123,7 @@ class OAuthWeb extends OAuth {
         );
 
         $auth = Http::curl(GoogleOauth::TOKEN_URL, $params, true);
+
         return json_decode($auth, $this->assoc);
 
     }
@@ -126,10 +135,12 @@ class OAuthWeb extends OAuth {
      * @access public
      * @param mixed $token accessToken or refreshToken
      */
-    public function revokeAccess($token) {
+    public function revokeAccess($token)
+    {
 
         $params = array('token' => $token);
         $data = Http::curl(self::REVOKE_URL, $params);
+
         return json_decode($data, $this->assoc);
     }
 

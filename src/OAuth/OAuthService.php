@@ -24,7 +24,8 @@ class OAuthService extends OAuth {
      * @param string $email (default: '') E-Mail address of your project from the Google APIs console
      * @param mixed $privateKey (default: null) Path to your private key file (*.p12)
      */
-    public function __construct($clientId='', $email='', $privateKey=null) {
+    public function __construct($clientId = '', $email = '', $privateKey = null)
+    {
         if (!function_exists('openssl_sign')) throw new Exception('openssl extension for PHP is needed.');
         $this->clientId = $clientId;
         $this->email = $email;
@@ -32,11 +33,13 @@ class OAuthService extends OAuth {
     }
 
 
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
-    public function setPrivateKey($key) {
+    public function setPrivateKey($key)
+    {
         $this->privateKey = $key;
     }
 
@@ -48,7 +51,8 @@ class OAuthService extends OAuth {
      * @param mixed $data (default: null) No data needed in this implementation
      * @return array Array with keys: access_token, expires_in
      */
-    public function getAccessToken($data=null) {
+    public function getAccessToken($data = null)
+    {
 
         if (!$this->clientId || !$this->email || !$this->privateKey) {
             throw new Exception('You must provide the clientId, email and a path to your private Key');
@@ -62,6 +66,7 @@ class OAuthService extends OAuth {
         );
 
         $auth = Http::curl(GoogleOauth::TOKEN_URL, $params, true);
+
         return json_decode($auth, $this->assoc);
 
     }
@@ -73,7 +78,8 @@ class OAuthService extends OAuth {
      *
      * @access protected
      */
-    protected function generateSignedJWT() {
+    protected function generateSignedJWT()
+    {
 
         // Check if a valid privateKey file is provided
         if (!file_exists($this->privateKey) || !is_file($this->privateKey)) {
@@ -118,6 +124,7 @@ class OAuthService extends OAuth {
         // Generate JWT
         $encodings[] = base64_encode($sig);
         $jwt = implode('.', $encodings);
+
         return $jwt;
 
     }

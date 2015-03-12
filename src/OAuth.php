@@ -12,15 +12,18 @@ abstract class OAuth {
     protected $assoc = true;
     protected $clientId = '';
 
-    public function __set($key, $value) {
+    public function __set($key, $value)
+    {
         $this->{$key} = $value;
     }
 
-    public function setClientId($id) {
+    public function setClientId($id)
+    {
         $this->clientId = $id;
     }
 
-    public function returnObjects($bool) {
+    public function returnObjects($bool)
+    {
         $this->assoc = !$bool;
     }
 
@@ -28,6 +31,8 @@ abstract class OAuth {
      * To be implemented by the subclasses
      *
      */
-    public function getAccessToken($data=null) {}
+    public function getAccessToken($data = null)
+    {
+    }
 
 }
