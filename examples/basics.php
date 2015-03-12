@@ -1,4 +1,6 @@
 <?php
+use timgws\GoogleAnalytics\API as GoogleAnalytics;
+
     /*
      * Basic usage example:
      *  - Redirect to the oAuth page if no access token is present
@@ -23,9 +25,10 @@
     $account_id = '<REPLACE ME>';
     
     session_start();
-    include('../GoogleAnalyticsAPI.class.php');
+    #include('../GoogleAnalyticsAPI.class.php');
+    include('vendor/autoload.php');
 
-    $ga = new GoogleAnalyticsAPI(); 
+    $ga = new GoogleAnalytics();
     $ga->auth->setClientId($client_id);
     $ga->auth->setClientSecret($client_secret);
     $ga->auth->setRedirectUri($redirect_uri);
