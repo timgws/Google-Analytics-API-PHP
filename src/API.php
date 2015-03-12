@@ -21,12 +21,13 @@ class API {
      */
     protected $defaultQueryParams = array ();
 
-
     /**
      * Constructor
      *
      * @access public
-     * @param String $auth (default: 'web') 'web' for Web-applications with end-users involved, 'service' for service applications (server-to-server)
+     * @param String $auth (default: 'web')
+     * 'web' for Web-applications with end-users involved,
+     * 'service' for service applications (server-to-server)
      */
     public function __construct($auth = 'web')
     {
@@ -38,7 +39,6 @@ class API {
             'end-date' => date('Y-m-d'),
             'metrics' => 'ga:visits',
         );
-
     }
 
     public function __set($key, $value)

@@ -4,6 +4,11 @@ Simple class to set up Oauth 2.0 with Google and query the Google Analytics API 
 The class supports getting the access tokens for *web applications* and *service accounts* registered in the Google APIs console.   
 See the documentation for further informations: https://developers.google.com/accounts/docs/OAuth2
 
+# Getting Started!
+This is a refactor of wanze/Google-Analytics-API-PHP.
+
+You should add this repository into your composer.json file!
+
 ##1. Basic Setup
 
 * Create a Project in the Google APIs Console: https://code.google.com/apis/console/
@@ -20,9 +25,10 @@ Depending on the chosen application type, the setup is slightly different. This 
 ###2.1 Web applications
 
 ```php
-include('GoogleAnalyticsAPI.class.php');
+include('vendor/autoload.php');
+use timgws\GoogleAnalytics\API as Analytics;
 
-$ga = new GoogleAnalyticsAPI(); 
+$ga = new Analytics();
 $ga->auth->setClientId('your_client_id'); // From the APIs console
 $ga->auth->setClientSecret('your_client_secret'); // From the APIs console
 $ga->auth->setRedirectUri('redirect_uri'); // Url to your app, must match one in the APIs console
@@ -68,9 +74,10 @@ Copy the email address from the APIs console (xxxxxxxx@developer.gserviceaccount
 as a user to your properties.
 
 ```php
-include('GoogleAnalyticsAPI.class.php');
+include('vendor/autoload.php');
+use timgws\GoogleAnalytics\API as Analytics;
 
-$ga = new GoogleAnalyticsAPI('service');
+$ga = new Analytics('service');
 $ga->auth->setClientId('your_client_id'); // From the APIs console
 $ga->auth->setEmail('your_email_addy'); // From the APIs console
 $ga->auth->setPrivateKey('/super/secure/path/to/your/privatekey.p12'); // Path to the .p12 file
