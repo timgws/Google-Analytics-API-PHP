@@ -52,6 +52,7 @@ if (!isset($_SESSION['oauth_access_token']) && !isset($_GET['code'])) {
  */
 if (!isset($_SESSION['oauth_access_token']) && isset($_GET['code'])) {
     $auth = $ga->auth->getAccessToken($_GET['code']);
+
     if ($auth['http_code'] == 200) {
         $accessToken = $auth['access_token'];
         $refreshToken = $auth['refresh_token'];
@@ -62,7 +63,7 @@ if (!isset($_SESSION['oauth_access_token']) && isset($_GET['code'])) {
         // If it expires use the refreshToken to get a fresh one
         $_SESSION['oauth_access_token'] = $accessToken;
     } else {
-        die("Sorry, something wend wrong retrieving the oAuth tokens");
+        die("Sorry, something went wrong retrieving the oAuth tokens");
     }
 }
 

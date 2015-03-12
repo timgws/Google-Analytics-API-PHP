@@ -86,7 +86,6 @@ class OAuthWeb extends OAuth {
      */
     public function getAccessToken($data = null)
     {
-
         if (!$this->clientId || !$this->clientSecret || !$this->redirectUri) {
             throw new OAuthException('You must provide the clientId, clientSecret and a redirectUri');
         }
@@ -102,7 +101,6 @@ class OAuthWeb extends OAuth {
         $auth = Http::curl(OAuth::TOKEN_URL, $params, true);
 
         return json_decode($auth, $this->assoc);
-
     }
 
     /**
