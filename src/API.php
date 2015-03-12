@@ -394,7 +394,14 @@ class API {
             throw new OAuthException('You must provide the accessToken and an accountId');
         }
 
-        $_params = array_merge($this->defaultQueryParams, array ('access_token' => $this->accessToken, 'ids' => $this->accountId));
+        $_params = array_merge(
+            $this->defaultQueryParams,
+            array (
+                'access_token' => $this->accessToken,
+                'ids' => $this->accountId
+            )
+        );
+
         $queryParams = array_merge($_params, $params);
         $data = Http::curl(self::API_URL, $queryParams);
 
