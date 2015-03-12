@@ -1,0 +1,26 @@
+{
+    "name": "timgws/google-analytics-api-php",
+    "description": "Simple class to query the Google Analytics API v3 with PHP",
+    "require": {
+        "guzzlehttp/guzzle": "~5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.5"
+    },
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Stefan Wanzenried",
+        "email": "stefan.wanzenried@gmail.com"
+      },
+      {
+        "name": "Tim Groeneveld",
+        "email": "tim@timg.ws"
+      }
+    ],
+    "autoload": {
+        "psr-4": {
+            "timgws\\GoogleAnalytics\\": "src/"
+        }
+      }
+}
