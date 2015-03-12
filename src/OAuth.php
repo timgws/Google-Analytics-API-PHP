@@ -1,12 +1,13 @@
 <?php namespace timgws\GoogleAnalytics;
 
-use timgws\GoogleAnalytics\OAuth\OAuthInterface;
+use timgws\GoogleAnalytics\OAuthInterface;
 
 /**
  * Abstract Auth class
  *
  */
-abstract class OAuth implements OAuthInterface {
+abstract class OAuth implements OAuthInterface
+{
 
     const TOKEN_URL = 'https://accounts.google.com/o/oauth2/token';
     const SCOPE_URL = 'https://www.googleapis.com/auth/analytics.readonly';
