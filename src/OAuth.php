@@ -1,10 +1,12 @@
 <?php namespace timgws\GoogleAnalytics;
 
+use timgws\GoogleAnalytics\OAuth\OAuthInterface;
+
 /**
  * Abstract Auth class
  *
  */
-abstract class OAuth {
+abstract class OAuth implements OAuthInterface {
 
     const TOKEN_URL = 'https://accounts.google.com/o/oauth2/token';
     const SCOPE_URL = 'https://www.googleapis.com/auth/analytics.readonly';
@@ -25,14 +27,6 @@ abstract class OAuth {
     public function returnObjects($bool)
     {
         $this->assoc = !$bool;
-    }
-
-    /**
-     * To be implemented by the subclasses
-     *
-     */
-    public function getAccessToken($data = null)
-    {
     }
 
 }

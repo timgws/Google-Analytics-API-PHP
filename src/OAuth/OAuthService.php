@@ -43,7 +43,6 @@ class OAuthService extends OAuth {
         $this->privateKey = $key;
     }
 
-
     /**
      * Get the accessToken in exchange with the JWT
      *

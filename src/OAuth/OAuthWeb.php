@@ -71,7 +71,6 @@ class OAuthWeb extends OAuth {
 
     }
 
-
     /**
      * Get the AccessToken in exchange with the code from the auth along with a refreshToken
      *
