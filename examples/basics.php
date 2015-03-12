@@ -1,4 +1,6 @@
-<?php
+<?php namespace GoogleAnalytics\Example;
+
+include('../vendor/autoload.php');
 use timgws\GoogleAnalytics\API as GoogleAnalytics;
 
 /*
@@ -25,9 +27,6 @@ $redirect_uri = '<REPLACE ME>';
 $account_id = '<REPLACE ME>';
 
 session_start();
-#include('../GoogleAnalyticsAPI.class.php');
-include('vendor/autoload.php');
-
 $ga = new GoogleAnalytics();
 $ga->auth->setClientId($client_id);
 $ga->auth->setClientSecret($client_secret);
