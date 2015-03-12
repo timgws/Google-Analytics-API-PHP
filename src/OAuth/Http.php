@@ -111,7 +111,6 @@ class Http {
         $data = preg_replace('/^{/', '{"http_code":'.$http_code.',', $data);
 
         // Finally, return the response to the caller.
-        print_r($data);
         return $data;
     }
 }

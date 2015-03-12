@@ -1,5 +1,6 @@
 <?php namespace timgws\GoogleAnalytics;
 
+use timgws\GoogleAnalytics\OAuth\Http;
 use timgws\GoogleAnalytics\OAuth\OAuthException;
 use timgws\GoogleAnalytics\OAuth\OAuthWeb;
 use timgws\GoogleAnalytics\OAuth\OAuthService;
