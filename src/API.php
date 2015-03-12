@@ -175,7 +175,8 @@ class API {
      */
     public function getProfiles()
     {
-        if (!$this->accessToken) throw new OAuthException('You must provide an accessToken');
+        if (!$this->accessToken)
+            throw new OAuthException('You must provide an accessToken');
 
         $data = Http::curl(self::PROFILES_URL, array ('access_token' => $this->accessToken));
 
