@@ -173,8 +173,19 @@ class API {
     {
 
         $defaults = array (
-            'metrics' => 'ga:visitors,ga:newVisits,ga:percentNewVisits,ga:visits,ga:bounces,ga:pageviews,ga:visitBounceRate,ga:timeOnSite,ga:avgTimeOnSite',
+            'metrics' => array (
+                'ga:visitors',
+                'ga:newVisits',
+                'ga:percentNewVisits',
+                'ga:visits',
+                'ga:bounces',
+                'ga:pageviews',
+                'ga:visitBounceRate',
+                'ga:timeOnSite',
+                'ga:avgTimeOnSite'
+            )
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
@@ -386,12 +397,24 @@ class API {
 
     }
 
-
+    /**
+     * Perform a Google Analytics API request.
+     *
+     * @param array $params
+     * @return mixed
+     * @throws OAuthException
+     */
     protected function _query($params = array ())
     {
 
         if (!$this->accessToken || !$this->accountId) {
             throw new OAuthException('You must provide the accessToken and an accountId');
+        }
+
+        foreach($params as $key => &$value)
+        {
+            if (is_array($value))
+                $value = implode(',', $value);
         }
 
         $_params = array_merge(
