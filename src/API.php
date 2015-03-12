@@ -42,16 +42,23 @@ class API {
         );
     }
 
+    /**
+     * Set a value inside the class.
+     *
+     * @param $key
+     * @param $value
+     * @throws OAuthException
+     */
     public function __set($key, $value)
     {
         switch ($key) {
-            case 'auth' :
+            case 'auth':
                 if (($value instanceof OAuth) == false) {
                     throw new OAuthException('auth needs to be a subclass of OAuth');
                 }
                 $this->auth = $value;
                 break;
-            case 'defaultQueryParams' :
+            case 'defaultQueryParams':
                 $this->setDefaultQueryParams($value);
                 break;
             default:
