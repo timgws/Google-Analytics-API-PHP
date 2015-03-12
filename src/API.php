@@ -31,8 +31,9 @@ class API {
      */
     public function __construct($auth = 'web')
     {
+        if (!function_exists('curl_init'))
+            throw new OAuthException('The curl extension for PHP is required.');
 
-        if (!function_exists('curl_init')) throw new OAuthException('The curl extension for PHP is required.');
         $this->auth = ($auth == 'web') ? new OAuthWeb() : new OAuthService();
         $this->defaultQueryParams = array (
             'start-date' => date('Y-m-d', strtotime('-1 month')),
@@ -43,7 +44,6 @@ class API {
 
     public function __set($key, $value)
     {
-
         switch ($key) {
             case 'auth' :
                 if (($value instanceof OAuth) == false) {
@@ -57,7 +57,6 @@ class API {
             default:
                 $this->{$key} = $value;
         }
-
     }
 
     public function setAccessToken($token)
@@ -118,13 +117,11 @@ class API {
      */
     public function getWebProperties()
     {
-
         if (!$this->accessToken) throw new OAuthException('You must provide an accessToken');
 
         $data = Http::curl(self::WEBPROPERTIES_URL, array ('access_token' => $this->accessToken));
 
         return json_decode($data, $this->assoc);
-
     }
 
 
@@ -136,13 +133,11 @@ class API {
      */
     public function getProfiles()
     {
-
         if (!$this->accessToken) throw new OAuthException('You must provide an accessToken');
 
         $data = Http::curl(self::PROFILES_URL, array ('access_token' => $this->accessToken));
 
         return json_decode($data, $this->assoc);
-
     }
 
     /*****************************************************************************************************************************
@@ -158,20 +153,18 @@ class API {
 
     public function getVisitsByDate($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:date',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getAudienceStatistics($params = array ())
     {
-
         $defaults = array (
             'metrics' => array (
                 'ga:visitors',
@@ -189,212 +182,195 @@ class API {
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getVisitsByCountries($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:country',
             'sort' => '-ga:visits',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getVisitsByCities($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:city',
             'sort' => '-ga:visits',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getVisitsByLanguages($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:language',
             'sort' => '-ga:visits',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getVisitsBySystemBrowsers($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:browser',
             'sort' => '-ga:visits',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getVisitsBySystemOs($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:operatingSystem',
             'sort' => '-ga:visits',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
 
     }
 
     public function getVisitsBySystemResolutions($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:screenResolution',
             'sort' => '-ga:visits',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getVisitsByMobileOs($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:operatingSystem',
             'sort' => '-ga:visits',
             'segment' => 'gaid::-11',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getVisitsByMobileResolutions($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:screenResolution',
             'sort' => '-ga:visits',
             'segment' => 'gaid::-11',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     /*
      * CONTENT
      *
      */
-
     public function getPageviewsByDate($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:pageviews',
             'dimensions' => 'ga:date',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getContentStatistics($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:pageviews,ga:uniquePageviews',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getContentTopPages($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:pageviews',
             'dimensions' => 'ga:pagePath',
             'sort' => '-ga:pageviews',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     /*
      * TRAFFIC SOURCES
      *
      */
-
     public function getTrafficSources($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:medium',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getKeywords($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:keyword',
             'sort' => '-ga:visits',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     public function getReferralTraffic($params = array ())
     {
-
         $defaults = array (
             'metrics' => 'ga:visits',
             'dimensions' => 'ga:source',
             'sort' => '-ga:visits',
         );
+
         $_params = array_merge($defaults, $params);
 
         return $this->_query($_params);
-
     }
 
     /**
