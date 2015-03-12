@@ -47,7 +47,7 @@ class API {
         switch ($key) {
             case 'auth' :
                 if (($value instanceof OAuth) == false) {
-                    throw new OAuthException('auth needs to be a subclass of GoogleOauth');
+                    throw new OAuthException('auth needs to be a subclass of OAuth');
                 }
                 $this->auth = $value;
                 break;
@@ -406,7 +406,6 @@ class API {
      */
     protected function _query($params = array ())
     {
-
         if (!$this->accessToken || !$this->accountId) {
             throw new OAuthException('You must provide the accessToken and an accountId');
         }
@@ -429,6 +428,5 @@ class API {
         $data = Http::curl(self::API_URL, $queryParams);
 
         return json_decode($data, $this->assoc);
-
     }
 }
