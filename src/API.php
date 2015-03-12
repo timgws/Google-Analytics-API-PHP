@@ -4,6 +4,40 @@ use timgws\GoogleAnalytics\OAuth\OAuthException;
 use timgws\GoogleAnalytics\OAuth\OAuthWeb;
 use timgws\GoogleAnalytics\OAuth\OAuthService;
 
+/**
+ * Google-Analytics-API
+ * Simple class which provides methods to set up OAuth 2.0 with Google and query the Google Analytics API v3 with PHP.
+ *
+ * There are two possibilities to get the Oauth 2.0 tokens from Google:
+ * 1) OAuth 2.0 for Web Applications (end-user involved)
+ * 2) OAuth 2.0 for Server to Server Applications (openssl required)
+ *
+ * Please note that this class does not handle error codes returned from Google. But the the http status code
+ * is returned along with the data. You can check for the array-key 'status_code', which should be 200 if everything worked.
+ *
+ * See the readme on GitHub for instructions and examples how to use the class
+ *
+ * @author Stefan Wanzenried
+ * @copyright Stefan Wanzenried
+ * @copyright Tim Groeneveld
+ * <www.timg.ws>
+ *
+ * @version 1.2
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 class API {
 
     const API_URL = 'https://www.googleapis.com/analytics/v3/data/ga';
