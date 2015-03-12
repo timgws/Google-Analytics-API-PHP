@@ -31,11 +31,17 @@ class OAuthWeb extends OAuth {
         $this->redirectUri = $redirectUri;
     }
 
+    /**
+     * @param $secret
+     */
     public function setClientSecret($secret)
     {
         $this->clientSecret = $secret;
     }
 
+    /**
+     * @param $uri
+     */
     public function setRedirectUri($uri)
     {
         $this->redirectUri = $uri;
@@ -53,7 +59,7 @@ class OAuthWeb extends OAuth {
     {
 
         if (!$this->clientId || !$this->redirectUri) {
-            throw new Exception('You must provide the clientId and a redirectUri');
+            throw new OAuthException('You must provide the clientId and a redirectUri');
         }
 
         $defaults = array(
@@ -82,7 +88,7 @@ class OAuthWeb extends OAuth {
     {
 
         if (!$this->clientId || !$this->clientSecret || !$this->redirectUri) {
-            throw new Exception('You must provide the clientId, clientSecret and a redirectUri');
+            throw new OAuthException('You must provide the clientId, clientSecret and a redirectUri');
         }
 
         $params = array(
@@ -99,7 +105,6 @@ class OAuthWeb extends OAuth {
 
     }
 
-
     /**
      * Get a new accessToken with the refreshToken
      *
@@ -111,7 +116,7 @@ class OAuthWeb extends OAuth {
     {
 
         if (!$this->clientId || !$this->clientSecret) {
-            throw new Exception('You must provide the clientId and clientSecret');
+            throw new OAuthException('You must provide the clientId and clientSecret');
         }
 
         $params = array(
@@ -126,7 +131,6 @@ class OAuthWeb extends OAuth {
         return json_decode($auth, $this->assoc);
 
     }
-
 
     /**
      * Revoke access

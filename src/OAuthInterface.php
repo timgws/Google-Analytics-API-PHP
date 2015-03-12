@@ -1,4 +1,4 @@
-<?php namespace timgws\GoogleAnalytics\OAuth;
+<?php namespace timgws\GoogleAnalytics;
 
 /**
  * OAuth services implement this!
@@ -10,13 +10,11 @@ interface OAuthInterface
 {
 
     /**
-     * Get the accessToken in exchange with the JWT
+     * Get the accessToken
      *
      * @access public
-     * @param mixed $data (default: null) No data needed in this implementation
+     * @param mixed $data
      * @return array Array with keys: access_token, expires_in
      */
-    public function getAccessToken($data = null)
-    {
-    }
+    public function getAccessToken($data = null);
 }

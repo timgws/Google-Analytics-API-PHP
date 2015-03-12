@@ -26,7 +26,9 @@ class OAuthService extends OAuth {
      */
     public function __construct($clientId = '', $email = '', $privateKey = null)
     {
-        if (!function_exists('openssl_sign')) throw new Exception('openssl extension for PHP is needed.');
+        if (!function_exists('openssl_sign'))
+            throw new OAuthException('openssl extension for PHP is needed.');
+
         $this->clientId = $clientId;
         $this->email = $email;
         $this->privateKey = $privateKey;
@@ -54,7 +56,7 @@ class OAuthService extends OAuth {
     {
 
         if (!$this->clientId || !$this->email || !$this->privateKey) {
-            throw new Exception('You must provide the clientId, email and a path to your private Key');
+            throw new OAuthException('You must provide the clientId, email and a path to your private Key');
         }
 
         $jwt = $this->generateSignedJWT();
@@ -82,7 +84,7 @@ class OAuthService extends OAuth {
 
         // Check if a valid privateKey file is provided
         if (!file_exists($this->privateKey) || !is_file($this->privateKey)) {
-            throw new Exception('Private key does not exist');
+            throw new OAuthException('Private key does not exist');
         }
 
         // Create header, claim and signature
@@ -109,15 +111,18 @@ class OAuthService extends OAuth {
         $input = implode('.', $encodings);
         $certs = array();
         $pkcs12 = file_get_contents($this->privateKey);
+
         if (!openssl_pkcs12_read($pkcs12, $certs, $this->password)) {
-            throw new Exception('Could not parse .p12 file');
+            throw new OAuthException('Could not parse .p12 file');
         }
+
         if (!isset($certs['pkey'])) {
-            throw new Exception('Could not find private key in .p12 file');
+            throw new OAuthException('Could not find private key in .p12 file');
         }
+
         $keyId = openssl_pkey_get_private($certs['pkey']);
         if (!openssl_sign($input, $sig, $keyId, 'sha256')) {
-            throw new Exception('Could not sign data');
+            throw new OAuthException('Could not sign data');
         }
 
         // Generate JWT
