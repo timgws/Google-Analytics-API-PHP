@@ -23,6 +23,7 @@ class OAuthService extends OAuth {
      * @param string $clientId (default: '') Client-ID of your project from the Google APIs console
      * @param string $email (default: '') E-Mail address of your project from the Google APIs console
      * @param mixed $privateKey (default: null) Path to your private key file (*.p12)
+     * @throws OAuthException if `openssl` extension is not enabled/openssl_sign function does not exist
      */
     public function __construct($clientId = '', $email = '', $privateKey = null)
     {
@@ -50,11 +51,11 @@ class OAuthService extends OAuth {
      *
      * @access public
      * @param mixed $data (default: null) No data needed in this implementation
+     * @throws OAuthException when missing clientId, email or privateKey.
      * @return array Array with keys: access_token, expires_in
      */
     public function getAccessToken($data = null)
     {
-
         if (!$this->clientId || !$this->email || !$this->privateKey) {
             throw new OAuthException('You must provide the clientId, email and a path to your private Key');
         }
@@ -66,12 +67,65 @@ class OAuthService extends OAuth {
             'assertion' => $jwt,
         );
 
-        $auth = Http::curl(GoogleOauth::TOKEN_URL, $params, true);
+        $auth = Http::curl(OAuthWeb::TOKEN_URL, $params, true);
 
         return json_decode($auth, $this->assoc);
 
     }
 
+    /**
+     * Build the JWT encoding JSON strings.
+     *
+     * @see: https://developers.google.com/accounts/docs/OAuth2ServiceAccount
+     * @return array
+     */
+    private function buildJWTEncodings()
+    {
+        // Create header, claim and signature
+        $header = array(
+            'alg' => 'RS256',
+            'typ' => 'JWT',
+        );
+
+        $currentTime = time();
+        $params = array(
+            'iss' => $this->email,
+            'scope' => OAuthWeb::SCOPE_URL,
+            'aud' => OAuthWeb::TOKEN_URL,
+            'exp' => $currentTime + self::MAX_LIFETIME_SECONDS,
+            'iat' => $currentTime,
+        );
+
+        $encodings = array(
+            base64_encode(json_encode($header)),
+            base64_encode(json_encode($params)),
+        );
+
+        return $encodings;
+    }
+
+    /**
+     * Get certificate store data from a provided pkcs12 file.
+     *
+     * @return array
+     * @throws OAuthException
+     */
+    private function getCertificateStoreData()
+    {
+        // Check if a valid privateKey file is provided
+        if (!file_exists($this->privateKey) || !is_file($this->privateKey) || !is_readable($this->privateKey)) {
+            throw new OAuthException('Private key does not exist, or the permissions on the file are incorrect');
+        }
+
+        $certs = array();
+        $pkcs12 = file_get_contents($this->privateKey);
+
+        if (!openssl_pkcs12_read($pkcs12, $certs, $this->password)) {
+            throw new OAuthException('Could not parse .p12 file');
+        }
+
+        return $certs;
+    }
 
     /**
      * Generate and sign a JWT request
@@ -81,40 +135,12 @@ class OAuthService extends OAuth {
      */
     protected function generateSignedJWT()
     {
-
-        // Check if a valid privateKey file is provided
-        if (!file_exists($this->privateKey) || !is_file($this->privateKey)) {
-            throw new OAuthException('Private key does not exist');
-        }
-
-        // Create header, claim and signature
-        $header = array(
-            'alg' => 'RS256',
-            'typ' => 'JWT',
-        );
-
-        $t = time();
-        $params = array(
-            'iss' => $this->email,
-            'scope' => GoogleOauth::SCOPE_URL,
-            'aud' => GoogleOauth::TOKEN_URL,
-            'exp' => $t + self::MAX_LIFETIME_SECONDS,
-            'iat' => $t,
-        );
-
-        $encodings = array(
-            base64_encode(json_encode($header)),
-            base64_encode(json_encode($params)),
-        );
+        // Retrieve the OpenSSL certificate store.
+        $certs = $this->getCertificateStoreData();
+        $encodings = $this->buildJWTEncodings();
 
         // Compute Signature
         $input = implode('.', $encodings);
-        $certs = array();
-        $pkcs12 = file_get_contents($this->privateKey);
-
-        if (!openssl_pkcs12_read($pkcs12, $certs, $this->password)) {
-            throw new OAuthException('Could not parse .p12 file');
-        }
 
         if (!isset($certs['pkey'])) {
             throw new OAuthException('Could not find private key in .p12 file');
