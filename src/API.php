@@ -63,6 +63,7 @@ class API {
      * @param String $auth (default: 'web')
      * 'web' for Web-applications with end-users involved,
      * 'service' for service applications (server-to-server)
+     * @throws OAuthException
      */
     public function __construct($auth = 'web')
     {
@@ -155,11 +156,13 @@ class API {
      * Get all WebProperties
      *
      * @access public
+     * @throws OAuthException
      * @return array data
      */
     public function getWebProperties()
     {
-        if (!$this->accessToken) throw new OAuthException('You must provide an accessToken');
+        if (!$this->accessToken)
+            throw new OAuthException('You must provide an accessToken');
 
         $data = Http::curl(self::WEBPROPERTIES_URL, array ('access_token' => $this->accessToken));
 
@@ -171,6 +174,7 @@ class API {
      * Get all Profiles
      *
      * @access public
+     * @throws OAuthException
      * @return array data
      */
     public function getProfiles()
