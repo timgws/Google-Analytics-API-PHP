@@ -1,28 +1,35 @@
 # Google Analytics API PHP
 
-Simple class to set up Oauth 2.0 with Google and query the Google Analytics API v3 with PHP. cURL is required!
-The class supports getting the access tokens for *web applications* and *service accounts* registered in the Google APIs console.   
-See the documentation for further informations: https://developers.google.com/accounts/docs/OAuth2
+This is a simple class to use OAuth 2.0 with Google and query the Google Analytics API v3 with PHP. cURL and OpenSSL are required!
+
+The class supports getting the access tokens for either **web applications** and **service accounts** registered in the Google APIs console.
+
+[See the Google OAuth2 documentation for further information](https://developers.google.com/accounts/docs/OAuth2).
+
+# Reporting issues
+Despite my best efforts, I still have not reached a state of perfection. Feel free to either:
+* **[Add new issues to the bug tracker](https://github.com/timgws/Google-Analytics-API-PHP/issues)**
+* **[Add a pull request](https://github.com/timgws/Google-Analytics-API-PHP/pulls)**
 
 # Getting Started!
-This is a refactor of wanze/Google-Analytics-API-PHP.
+This is a refactor of `wanze/Google-Analytics-API-PHP`. You should add this repository into your composer.json file!
 
-You should add this repository into your composer.json file!
+## "How to" guide for timgws/Google-Analytics-API-PHP
 
-##1. Basic Setup
+### 1. Basic Setup
 
 * Create a Project in the Google APIs Console: https://code.google.com/apis/console/
 * Enable the Analytics API under Services
 * Under API Access: Create an Oauth 2.0 Client-ID
-* Give a Product-Name, choose *Web Application* or *Service Account* depending on your needs
+* Give a Product-Name, choose **Web Application** or **Service Account** depending on your needs
 * Web Application: Set a redirect-uri in the project which points to your apps url
 * Service Account: Download the private key (.p12 file)
 
-##2. Set up Auth
+### 2. Set up Auth
 
 Depending on the chosen application type, the setup is slightly different. This section describes both ways independently.
 
-###2.1 Web applications
+#### 2.1 Web applications
 
 ```php
 include('vendor/autoload.php');
@@ -68,7 +75,7 @@ if ((time() - $tokenCreated) >= $tokenExpires) {
 }
 ```
 
-###2.2 Service accounts
+#### 2.2 Service accounts
 
 Copy the email address from the APIs console (xxxxxxxx@developer.gserviceaccount.com). Visit your GA admin and add this email
 as a user to your properties.
@@ -99,7 +106,7 @@ if ($auth['http_code'] == 200) {
 }
 ```
 
-##3. Find the Account-ID
+### 3. Find the Account-ID
 
 Before you can query the API, you need the ID of the Account you want to query the data.
 The ID can be found like this:
@@ -121,7 +128,8 @@ foreach ($profiles['items'] as $item) {
 // See next chapter how to set the account-id.
 print_r($accounts);
 ```
-##4. Query the Google Analytics API
+
+### 4. Query the Google Analytics API
 
 Once you have a valid accessToken and an Account-ID, you can query the Google Analytics API.
 You can set some default Query Parameters that will be executed with every query.
