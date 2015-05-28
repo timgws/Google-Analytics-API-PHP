@@ -89,7 +89,7 @@ class API {
     {
         switch ($key) {
             case 'auth':
-                if (($value instanceof OAuth) == false) {
+                if (($value instanceof OAuth) === false) {
                     throw new OAuthException('auth needs to be a subclass of OAuth');
                 }
                 $this->auth = $value;
