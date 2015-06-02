@@ -124,7 +124,7 @@ class OAuthWeb extends OAuth {
             'grant_type' => 'refresh_token',
         );
 
-        $auth = Http::curl(GoogleOauth::TOKEN_URL, $params, true);
+        $auth = Http::curl(OAuth::TOKEN_URL, $params, true);
 
         return json_decode($auth, $this->assoc);
 
