@@ -1,7 +1,7 @@
 {
     "name": "timgws/google-analytics-api",
     "description": "Simple class to query the Google Analytics API v3 with PHP",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "ext-openssl": "*",
         "ext-curl": "*"
