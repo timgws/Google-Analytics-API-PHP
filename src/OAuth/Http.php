@@ -10,9 +10,7 @@ class Http {
      * @param mixed $url The url to send data
      * @param array $params (default: array()) Array with key/value pairs to send
      * @param bool $post (default: false) True when sending with POST
-     *
-     * @todo: THIS IS BROKEN!
-     * I believe it might have to do with CURLOPT_HTTPAUTH
+     * @return mixed
      */
     public static function curl($url, $params=array(), $post=false)
     {
@@ -23,13 +21,25 @@ class Http {
     {
         $curl = curl_init($url);
 
+        $options = [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_HTTPAUTH       => CURLAUTH_ANY,
+            CURLOPT_AUTOREFERER    => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_ENCODING       => 'gzip',
+            CURLOPT_USERAGENT      => 'Google Analytics API (timgws/Google-Analytics-API)'
+        ];
+
         if ($post) {
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+            $options +=
+                [
+                    CURLOPT_POST       => true,
+                    CURLOPT_POSTFIELDS => $params
+                ];
         }
 
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt_array($curl, $options);
+
         return $curl;
     }
 
