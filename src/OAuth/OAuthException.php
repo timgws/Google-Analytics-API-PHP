@@ -1,7 +1,7 @@
-<?php namespace timgws\GoogleAnalytics\OAuth;
+<?php
 
+namespace timgws\GoogleAnalytics\OAuth;
 
 class OAuthException extends \Exception
 {
-
 }

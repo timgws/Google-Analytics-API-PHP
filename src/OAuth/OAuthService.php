@@ -1,14 +1,17 @@
-<?php namespace timgws\GoogleAnalytics\OAuth;
+<?php
+
+namespace timgws\GoogleAnalytics\OAuth;
 
 use timgws\GoogleAnalytics\OAuth;
 
 /**
  * Oauth 2.0 for service applications requiring a private key
  * openssl extension for PHP is required!
- * @extends OAuth
  *
+ * @extends OAuth
  */
-class OAuthService extends OAuth {
+class OAuthService extends OAuth
+{
     const MAX_LIFETIME_SECONDS = 3600;
     const GRANT_TYPE = 'urn:ietf:params:oauth:grant-type:jwt-bearer';
 
@@ -17,24 +20,24 @@ class OAuthService extends OAuth {
     protected $password = 'notasecret';
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @access public
-     * @param string $clientId (default: '') Client-ID of your project from the Google APIs console
-     * @param string $email (default: '') E-Mail address of your project from the Google APIs console
-     * @param mixed $privateKey (default: null) Path to your private key file (*.p12)
+     * @param string $clientId   (default: '') Client-ID of your project from the Google APIs console
+     * @param string $email      (default: '') E-Mail address of your project from the Google APIs console
+     * @param mixed  $privateKey (default: null) Path to your private key file (*.p12)
+     *
      * @throws OAuthException if `openssl` extension is not enabled/openssl_sign function does not exist
      */
     public function __construct($clientId = '', $email = '', $privateKey = null)
     {
-        if (!function_exists('openssl_sign'))
+        if (!function_exists('openssl_sign')) {
             throw new OAuthException('openssl extension for PHP is needed.');
+        }
 
         $this->clientId = $clientId;
         $this->email = $email;
         $this->privateKey = $privateKey;
     }
-
 
     public function setEmail($email)
     {
@@ -47,11 +50,12 @@ class OAuthService extends OAuth {
     }
 
     /**
-     * Get the accessToken in exchange with the JWT
+     * Get the accessToken in exchange with the JWT.
      *
-     * @access public
      * @param mixed $data (default: null) No data needed in this implementation
+     *
      * @throws OAuthException when missing clientId, email or privateKey.
+     *
      * @return array Array with keys: access_token, expires_in
      */
     public function getAccessToken($data = null)
@@ -70,13 +74,13 @@ class OAuthService extends OAuth {
         $auth = Http::curl(OAuthWeb::TOKEN_URL, $params, true);
 
         return json_decode($auth, $this->assoc);
-
     }
 
     /**
      * Build the JWT encoding JSON strings.
      *
      * @see: https://developers.google.com/accounts/docs/OAuth2ServiceAccount
+     *
      * @return array
      */
     private function buildJWTEncodings()
@@ -108,6 +112,7 @@ class OAuthService extends OAuth {
      * Get certificate store data from a provided pkcs12 file.
      *
      * @return array
+     *
      * @throws OAuthException
      */
     private function getCertificateStoreData()
@@ -129,9 +134,7 @@ class OAuthService extends OAuth {
 
     /**
      * Generate and sign a JWT request
-     * See: https://developers.google.com/accounts/docs/OAuth2ServiceAccount
-     *
-     * @access protected
+     * See: https://developers.google.com/accounts/docs/OAuth2ServiceAccount.
      */
     protected function generateSignedJWT()
     {
@@ -156,7 +159,5 @@ class OAuthService extends OAuth {
         $jwt = implode('.', $encodings);
 
         return $jwt;
-
     }
-
 }

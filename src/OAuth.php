@@ -1,14 +1,12 @@
-<?php namespace timgws\GoogleAnalytics;
+<?php
 
-use timgws\GoogleAnalytics\OAuthInterface;
+namespace timgws\GoogleAnalytics;
 
 /**
- * Abstract Auth class
- *
+ * Abstract Auth class.
  */
 abstract class OAuth implements OAuthInterface
 {
-
     /**
      * Different type of OAuth methods!
      */
@@ -35,5 +33,4 @@ abstract class OAuth implements OAuthInterface
     {
         $this->assoc = !$bool;
     }
-
 }
