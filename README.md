@@ -176,6 +176,9 @@ $referralTraffic = $ga->getReferralTraffic();
 $visitsByLanguages = $ga->getVisitsByLanguages();
 ```
 
+# Old GAPI wrapper
+A dusty GAPI wrapper is included in `gapi_wrapper/`
+
 ### Resources
 * [Metrics & Dimensions Reference](https://developers.google.com/analytics/devguides/reporting/core/dimsmets)
 * [Google Analytics Query Explorer for testing queries and results](http://ga-dev-tools.appspot.com/explorer/)
